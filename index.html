@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" style="background: #C0C0C0;height: 100%;">
+
+<head>
+    <title>Psychology Study</title>
+    <meta charset="utf-8">
+    <script src="libs/jquery-min.js" type="text/javascript"></script>
+    <script src="libs/underscore-min.js" type="text/javascript"></script>
+    <script src="rms.js" type="text/javascript"></script>
+    <script src="jspsych.js" type="text/javascript"></script>
+    <script src="jspsych-brms.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/jspsych.css" type="text/css"></link>
+    <script>
+        function download(filename, text) {
+            var element = document.createElement('a');
+            element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+            element.setAttribute('download', filename);
+
+            element.style.display = 'none';
+            document.body.appendChild(element);
+
+            element.click();
+
+            document.body.removeChild(element);
+        }
+
+        // Shuffle list function
+        function shuffle(array) {
+            let currentIndex = array.length,
+                randomIndex;
+
+            // While there remain elements to shuffle...
+            while (currentIndex != 0) {
+                // Pick a remaining element...
+                let randomIndex = Math.floor(Math.random() * currentIndex);
+                currentIndex--;
+                // And swap it with the current element.
+                [array[currentIndex], array[randomIndex]] = [
+                    array[randomIndex], array[currentIndex]
+                ];
+            }
+
+            return array;
+        }
+
+        // Images path
+        const images = ["images/f42887_e_001.jpg", "images/f42887_e_005.jpg",
+            "images/f42887_e_015.jpg",
+            "images/f42887_e_025.jpg", "images/f42887_e_028.jpg", "images/f42887_e_053.jpg",
+            "images/f42887_e_058.jpg", "images/f42887_e_064.jpg", "images/f42887_e_072.jpg",
+            "images/f42887_e_080.jpg", "images/f42887_e_098.jpg", "images/f42887_e_103.jpg",
+            "images/f42887_e_121.jpg", "images/f42887_e_127.jpg", "images/f42887_e_140.jpg",
+            "images/f42887_e_156.jpg", "images/f42887_e_161.jpg", "images/f42887_e_180.jpg",
+            "images/f42887_e_202.jpg", "images/f42887_e_241.jpg", "images/f42887_e_001_1.jpg",
+            "images/f42887_e_005_1.jpg", "images/f42887_e_015_1.jpg", "images/f42887_e_025_1.jpg",
+            "images/f42887_e_028_1.jpg", "images/f42887_e_053_1.jpg", "images/f42887_e_058_1.jpg",
+            "images/f42887_e_064_1.jpg", "images/f42887_e_072_1.jpg", "images/f42887_e_080_1.jpg",
+            "images/f42887_e_098_1.jpg", "images/f42887_e_103_1.jpg", "images/f42887_e_121_1.jpg",
+            "images/f42887_e_127_1.jpg", "images/f42887_e_140_1.jpg", "images/f42887_e_156_1.jpg",
+            "images/f42887_e_161_1.jpg", "images/f42887_e_180_1.jpg", "images/f42887_e_202_1.jpg",
+            "images/f42887_e_241_1.jpg"
+        ]
+
+        // Choices for RMS trials (q for left and p for right)
+        const choices = ["q", "p"];
+
+        let full_timeline = [];
+
+        shuffle(images).forEach(img => {
+            full_timeline.push({
+                type: "bRMS",
+                stimulus: [img],
+                choices: ["p", "q"]
+            });
+        });
+
+        jsPsych.init({
+            timeline: full_timeline,
+            fullscreen: true,
+            on_finish: function() {
+                download("data.csv", jsPsych.data.get().csv());
+            }
+        });
+    </script>
+
+</head>
+
+<body>
+
+</body>
+
+</html>
