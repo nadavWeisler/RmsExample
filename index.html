@@ -43,6 +43,18 @@
             return array;
         }
 
+        function getRmsResults(data) {
+            correct = 0;
+            rt_sum = 0;
+            data.forEach((trial, i) => {
+                if (trial.correct) {
+                    correct++;
+                    rt_sum += trial.rt;
+                }
+            });
+            return [correct, rt_sum]
+        }
+
         // Images path
         const images = ["images/f42887_e_001.jpg", "images/f42887_e_005.jpg",
             "images/f42887_e_015.jpg",
@@ -72,7 +84,9 @@
                 stimulus: [img],
                 choices: ["p", "q"],
                 post_trial_gap: 400,
-                stimulus_opacity: 0.3
+                stimulus_opacity: 0.3,
+                right_up: ['P'],
+                left_down: ['Q']
             });
         });
 
@@ -80,7 +94,8 @@
             timeline: full_timeline,
             fullscreen: true,
             on_finish: function() {
-                download("data.csv", jsPsych.data.get().csv());
+                results = getRmsResults(jsPsych.data.get().values());
+                alert("You got " + results[0] + " correct out of " + full_timeline.length + " trials. Your average reaction time was " + Math.round(results[1] / results[0]) + " ms.");
             }
         });
     </script>
